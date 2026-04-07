@@ -23,8 +23,26 @@ export default function BlogPostPage({ params }: { params: Promise<{ id: string 
 
   const relatedBlogs = BLOGS.filter(b => blog.relatedIds.includes(b.id));
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: blog.summary,
+    image: `https://auraix.entrext.com/logo.png`,
+    datePublished: new Date(blog.date).toISOString(),
+    author: {
+      '@type': 'Organization',
+      name: 'Auraix',
+      url: 'https://auraix.entrext.com',
+    },
+  };
+
   return (
     <div style={{ background: "var(--bg-primary)", color: "var(--text-primary)", minHeight: "100vh", position: "relative" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <DynamicBackground type="aurora" />
 
       {/* Navbar */}

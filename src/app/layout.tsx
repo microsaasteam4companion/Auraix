@@ -12,13 +12,35 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://auraix.entrext.com'),
   title: "Auraix — Your Digital Aura, Powered by AI.",
   description:
     "Create a stunning link-in-bio page in seconds. Powered by AI, designed for creators.",
-  keywords: ["link in bio", "auraix", "link page", "social links", "ai bio generator"],
+  keywords: ["link in bio", "auraix", "link page", "social links", "ai bio generator", "entrext labs"],
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
+  },
+  openGraph: {
+    title: "Auraix — Your Digital Aura, Powered by AI.",
+    description: "Create a stunning link-in-bio page in seconds. Powered by AI, designed for creators.",
+    url: 'https://auraix.entrext.com',
+    siteName: 'Auraix',
+    images: [
+      {
+        url: '/logo.png', // Ideally a dedicated OG image should be used
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Auraix — Your Digital Aura, Powered by AI.",
+    description: "Create a stunning link-in-bio page in seconds. Powered by AI, designed for creators.",
+    images: ['/logo.png'],
   },
 };
 
@@ -27,9 +49,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Auraix',
+    url: 'https://auraix.entrext.com',
+    logo: 'https://auraix.entrext.com/logo.png',
+    sameAs: [
+      'https://www.instagram.com/entrext.labs/',
+      'http://linkedin.com/company/entrext/',
+    ],
+  };
+
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        </head>
         <body className={`${inter.variable} ${inter.className}`} suppressHydrationWarning>
           <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
             <ToastProvider>
