@@ -23,10 +23,31 @@ export default function PricingButton({ productId, cta, highlight }: PricingButt
       return;
     }
 
-    // Redirect directly to the Dodo Payments Checkout Link with the given Product ID
-    // We append the userId to the metadata so that the webhook can upgrade the user upon success!
-    const checkoutUrl = `https://checkout.dodopayments.com/buy/${productId}?quantity=1&metadata_userId=${userId}`;
-    window.location.href = checkoutUrl;
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/checkout/dodo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Failed to create checkout session');
+      }
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received from Dodo.');
+      }
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      alert('Checkout Error: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
