@@ -9,13 +9,14 @@ import type { UserProfile, BioPage, BioLink, SlugEntry, PageAnalytics } from '@/
 // ── User Operations ──────────────────────────────────────────
 
 export async function createUserProfile(uid: string, data: Partial<UserProfile>) {
+  const isSpecialUser = data.email?.toLowerCase() === 'komalsiddharth814@gmail.com';
   const ref = doc(db, 'users', uid);
   await setDoc(ref, {
     uid,
     email: data.email || '',
     displayName: data.displayName || '',
     photoURL: data.photoURL || '',
-    plan: 'free',
+    plan: isSpecialUser ? 'pro' : 'free',
     pagesUsed: 0,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
@@ -27,6 +28,13 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   const snap = await getDoc(doc(db, 'users', uid));
   if (!snap.exists()) return null;
   const data = snap.data();
+  
+  // Manual grant for special user
+  if (data.email?.toLowerCase() === 'komalsiddharth814@gmail.com' && data.plan !== 'pro') {
+    await updateDoc(doc(db, 'users', uid), { plan: 'pro' });
+    data.plan = 'pro';
+  }
+
   return {
     ...data,
     createdAt: data.createdAt?.toDate?.() || new Date(),
