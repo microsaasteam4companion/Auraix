@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import { ArrowLeft, Sparkles, Zap, BarChart3, Shield, Star, Globe, TrendingUp, Cpu, Users } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
