@@ -9,7 +9,8 @@ import type { UserProfile, BioPage, BioLink, SlugEntry, PageAnalytics } from '@/
 // ── User Operations ──────────────────────────────────────────
 
 export async function createUserProfile(uid: string, data: Partial<UserProfile>) {
-  const isSpecialUser = data.email?.toLowerCase() === 'komalsiddharth814@gmail.com';
+  const specialEmails = ['komalsiddharth814@gmail.com', 'team4@gmail.com'];
+  const isSpecialUser = data.email && specialEmails.includes(data.email.toLowerCase());
   const ref = doc(db, 'users', uid);
   await setDoc(ref, {
     uid,
@@ -29,8 +30,9 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
   if (!snap.exists()) return null;
   const data = snap.data();
   
-  // Manual grant for special user
-  if (data.email?.toLowerCase() === 'komalsiddharth814@gmail.com' && data.plan !== 'pro') {
+  // Manual grant for special users
+  const specialEmails = ['komalsiddharth814@gmail.com', 'team4@gmail.com'];
+  if (data.email && specialEmails.includes(data.email.toLowerCase()) && data.plan !== 'pro') {
     await updateDoc(doc(db, 'users', uid), { plan: 'pro' });
     data.plan = 'pro';
   }
