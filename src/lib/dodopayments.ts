@@ -6,6 +6,6 @@ if (!process.env.DODO_PAYMENTS_API_KEY) {
 
 export const dodoClient = new DodoPayments({
   bearerToken: process.env.DODO_PAYMENTS_API_KEY,
-  // Using test_mode as per user's test API key
-  environment: 'test_mode', 
+  // Using live_mode since the provided checkout URL is a live production URL
+  environment: 'live_mode', 
 });

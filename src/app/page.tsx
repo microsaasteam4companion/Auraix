@@ -458,7 +458,13 @@ export default async function LandingPage() {
 
           <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)", marginTop: 24, marginBottom: 8 }} />
 
-          <p style={{ color: "#475569", fontSize: 13, textAlign: "center" }}>
+          <div style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center" }}>
+            <Link href="/terms" style={{ color: "#64748B", fontSize: 13, textDecoration: "none", transition: "color 0.2s" }} className="hover-glow">Terms & Conditions</Link>
+            <Link href="/privacy" style={{ color: "#64748B", fontSize: 13, textDecoration: "none", transition: "color 0.2s" }} className="hover-glow">Privacy Policy</Link>
+            <Link href="/cookie" style={{ color: "#64748B", fontSize: 13, textDecoration: "none", transition: "color 0.2s" }} className="hover-glow">Cookie Policy</Link>
+          </div>
+
+          <p style={{ color: "#475569", fontSize: 13, textAlign: "center", marginTop: 8 }}>
             © {new Date().getFullYear()} Auraix. All rights reserved.
           </p>
         </div>
